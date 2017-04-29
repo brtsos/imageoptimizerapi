@@ -1,6 +1,7 @@
 <?php
 
 use Respect\Validation\Validator as v;
+use \Slim\Middleware\HttpBasicAuthentication\PdoAuthenticator;
 
 session_start();
 
@@ -26,6 +27,24 @@ $app = new \Slim\App([
 ]);
 
 require_once __DIR__ . '/database.php';
+
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+    "authenticator" => new PdoAuthenticator([
+        "pdo" => $pdo,
+        "table" => "users",
+        "user" => "name",
+        "hash" => "password"
+    ]),
+    "path" => "/api",
+    "realm" => "Protected",
+    "secure" => false,
+    "error" => function ($request, $response, $arguments) {
+        $data = [];
+        $data["status"] = "error";
+        $data["message"] = $arguments["message"];
+        return $response->write(json_encode($data, JSON_UNESCAPED_SLASHES));
+    }
+]));
 
 $container = $app->getContainer();
 
@@ -85,13 +104,8 @@ $container['csrf'] = function($container) {
 	return new \Slim\Csrf\Guard;
 };
 
-
-
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
-$app->add(new \App\Middleware\CsrfViewMiddleware($container));
-
-$app->add($container->csrf);
 
 v::with('App\\Validation\\Rules\\');
 
