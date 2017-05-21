@@ -5,7 +5,8 @@ use \App\Middleware\CsrfViewMiddleware;
 
 
 $app->get('/','HomeController:index')->setName('home');
-$app->post('/api', 'ImageController:compressImage');
+$app->post('/api', 'ImageController:postCompressImage');
+$app->get('/api', 'ImageController:getCompressImage');
 
 $app->group('',function () {
 	$this->get('/auth/signup','AuthController:getSignUp')->setName('auth.signup');

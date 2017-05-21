@@ -19,7 +19,8 @@ class User extends Model
 		'email',
 		'name',
 		'password',
-		'activ_code'
+		'activ_code',
+        'request_limit'
 	];
 
 	public function setPassword($password)

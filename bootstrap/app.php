@@ -13,6 +13,11 @@ try {
 	//
 }
 
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();
+
+
 $app = new \Slim\App([
 	'settings' => [
 		'displayErrorDetails' => true,
@@ -96,12 +101,12 @@ $container['AuthController'] = function($container) {
 	return new \App\Controllers\Auth\AuthController($container);
 };
 
-$container['PasswordController'] = function($container) {
-	return new \App\Controllers\Auth\PasswordController($container);
+$container['ImageController'] = function($container) {
+    return new \App\Controllers\ImageController($container);
 };
 
-$container['csrf'] = function($container) {
-	return new \Slim\Csrf\Guard;
+$container['PasswordController'] = function($container) {
+	return new \App\Controllers\Auth\PasswordController($container);
 };
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));

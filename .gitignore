@@ -4,3 +4,5 @@
 phinx.yml
 /composer.lock
 .DS_Store
+/public/tmp/*
+/public/tmp/

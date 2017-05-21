@@ -33,6 +33,7 @@ class UserMigration extends AbstractMigration
             ->addColumn('email', 'string', array('limit' => 100))
             ->addColumn('activ', 'integer', array('limit' => 1, 'default' => 0))
             ->addColumn('activ_code', 'string', array('limit' => 32))
+            ->addColumn('request_limit', 'integer', array('limit' => 9, 'default' => 500))
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime', array('null' => true))
             ->addIndex(array('name', 'email'), array('unique' => true))
